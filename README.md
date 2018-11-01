@@ -4,7 +4,7 @@ This is a super complex project but doesn't have a CI. It
 To work this project has 3 scripts
 
 1. buildProject.sh : This builds the super complex project output. Needs current build number as argument.
-2. signProject.sh : This takes the output of buildProject and signs the project with key the recently generated key and generates signed version.
+2. signProject.sh : This takes the output of buildProject and signs the project with the recently generated key and generates signed version.
 3. generateSigningKey.sh : This generates the super secure signing key to sign the project in a hidden location. This key is only valid for 5 minutes and need to be regenerated every 5 minutes. This key is used by signProject.sh to sign. generateSigningKey is not compatible with `figlet` so this needs to run in machine without `figlet` installed.
 
 ## CI Implementation
