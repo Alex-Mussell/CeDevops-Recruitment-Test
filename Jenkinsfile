@@ -11,7 +11,7 @@ pipeline {
 
 			steps {
 				git branch: 'master',
-					credentialsId: 'c2459d5c-3e94-4b15-b2ec-001d98571c42',
+					credentialsId: 'ad98a82a-3210-440e-abf5-d28bee6c6f93',
 					url: 'ssh://git@github.com:Alex-Mussell/CeDevops-Recruitment-Test.git'
 
 				sh 'ls -lat'
