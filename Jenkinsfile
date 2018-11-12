@@ -11,8 +11,10 @@ pipeline {
 
 			steps {
 				git branch: 'master',
-					credentialsId: 'f6752bed-dfa8-4de8-9a89-b66d46c08d29',
+					credentialsId: 'c2459d5c-3e94-4b15-b2ec-001d98571c42',
 					url: 'ssh://git@github.com:Alex-Mussell/CeDevops-Recruitment-Test.git'
+
+				sh 'ls -lat'
 
 				sh 'apt-get install figlet'
 			}
