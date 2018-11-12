@@ -2,7 +2,7 @@ pipeline {
 
 
 	stages {
-		stage(Preparing 'build' environment) {
+		stage('Preparing build environment') {
 
 			agent {
 				label 'build'
