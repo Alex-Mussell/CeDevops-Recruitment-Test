@@ -1,5 +1,7 @@
 pipeline {
 
+	agent none
+
 	stages {
 		stage('Preparing build environment') {
 
