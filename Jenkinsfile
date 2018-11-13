@@ -43,19 +43,22 @@ pipeline {
 
 
 		stage('Unstash key generation script and assign a cron to is if they dont exist'){
+
+
+			agent {
+				label 'generate'
+			}
+
 			environment {
 				cronExists = fileExists 'myCron'
 			}
 			
 			when {
 				expression {
-					cronExists == False
+					${cronExists} == False
 				}
 			}
 
-			agent {
-				label 'generate'
-			}
 
 
 			steps {
