@@ -54,14 +54,16 @@ pipeline {
 
 					if(!cronExists){
 						node('build'){
-							stash includes: "/var/jenkins/workspace/q-go-pipeline/generateSigningKey.sh", name: "generate-key"
+							stash includes: '/var/jenkins/workspace/q-go-pipeline/generateSigningKey.sh', name: 'generate-key'
+							node('generate'){
+								dir('/root'){
+									unstash 'generate-key'
+								}
+							}
 						}
 
-						dir('/root'){
-							unstash generate-key
-						}
 						sh 'echo "*/5 * * * * /root/generateSigningKey.sh" >> /root/myCron'
-						sh 'crontab myCron'
+						sh 'crontab /root/myCron'
 					}
 				}
 			}
