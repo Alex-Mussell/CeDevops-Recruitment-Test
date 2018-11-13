@@ -47,8 +47,8 @@ pipeline {
 				label 'generate'
 			}
 
-			stages {
-				script {
+			script {
+				stages {
 					def cronExists = fileExists '/root/myCron'
 					def generateExists = fileExists '/root/generateSigningKey.sh'
 
