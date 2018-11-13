@@ -41,45 +41,48 @@ pipeline {
 			}
 		}
 
-		stage('Generate key every 5 minutes on seperate slave and sign') {
-
-			agent {
-				label 'generate'
-			}
-
+		stage('Sign file if generate key is already generating keys.') {
 			environment {
 				cronExists = fileExists 'myCron'
 				generateExists = fileExists 'generateSigningKey.sh'
 			}
 
-			stages {
-				stage('Sign our project and output contents to console') {
-					when {
-						expression{
-							cronExists && generateExists
-						}
-					}
-
-					unstash hash-out
-
-					sh 'signBuild.sh'
+			when {
+				expression{
+					cronExists && generateExists
 				}
-				
-				
-				stage('Unstash and create cron job') {
-					when {
-						expression {
-							cronExists == False
-						}
-					}
+			}
 
-					unstash 'generate-key'
+			agent {
+				label 'generate'
+			}
 
-					sh 'echo "*/5 * * * * generateSigningKey.sh" >> /root/myCron'
-					sh 'crontab myCron'
+			steps {
 
-					sh 'echo myCron'
+				unstash hash-out
+
+				sh 'signBuild.sh'
+			}
+		}
+
+		stage('Unstash key generation script and assign a cron to is if they dont exist'){
+			environment {
+				cronExists = fileExists 'myCron'
+			}
+			
+			when {
+				expression {
+					cronExists == False
 				}
+			}
+
+			steps {
+				unstash 'generate-key'
+
+				sh 'echo "*/5 * * * * generateSigningKey.sh" >> /root/myCron'
+				sh 'crontab myCron'
+
+				sh 'echo myCron'
 			}
 		}
 	}
