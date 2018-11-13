@@ -37,7 +37,7 @@ pipeline {
 						returnStdout: true
 					) 
 
-					sh './buildProject.sh ${PROJECT_HASH}
+					sh './buildProject.sh ${PROJECT_HASH}'
 				}
 			}
 		}
