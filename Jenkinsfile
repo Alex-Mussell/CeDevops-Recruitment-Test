@@ -51,8 +51,9 @@ pipeline {
 			steps {
 				script {
 					def cronExists = sh script: 'find -name "myCron"', returnStatus: true
+					sh "echo $cronExists"
 				}
-				sh "echo $cronExists"
+				
 			}
 		}
 	}
