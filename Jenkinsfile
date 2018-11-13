@@ -47,11 +47,12 @@ pipeline {
 
 			agent {
 				label 'generate'
+				script {
+					def cronExists = sh script: 'find -name "myCron"', returnStatus: true
+				}
 			}
 
-			environment {
-				cronExists = fileExists 'myCron'
-			}
+			
 			
 			when {
 				expression {
@@ -59,11 +60,8 @@ pipeline {
 				}
 			}
 
+			sh "echo $cronExists"
 
-
-			steps {
-				sh 'printenv'
-			}
 		}
 	}
 }
