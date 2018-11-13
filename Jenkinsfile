@@ -55,28 +55,14 @@ pipeline {
 			
 			when {
 				expression {
-					${cronExists} == False
+					cronExists == False
 				}
 			}
 
 
 
 			steps {
-
-				sh '${cronExists}'
-				agent {
-					label 'build'
-					stash includes: "/var/jenkins/workspace/q-go-pipeline/generateSigningKey.sh", name: "generate-key"
-				}
-
-				dir ('/root/') {
-					unstash 'generate-key'
-				}
-
-				sh 'echo "*/5 * * * * generateSigningKey.sh" >> /root/myCron'
-				sh 'crontab myCron'
-
-				sh 'echo myCron'
+				sh 'printenv'
 			}
 		}
 	}
