@@ -58,8 +58,9 @@ pipeline {
 				}
 			}
 
-			sh "echo $cronExists"
-
+			steps {
+				sh "echo $cronExists"
+			}
 		}
 	}
 }
