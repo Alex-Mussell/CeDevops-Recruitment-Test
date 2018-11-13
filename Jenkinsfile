@@ -47,26 +47,28 @@ pipeline {
 				label 'generate'
 			}
 
-			script {
-				def cronExists = fileExists '/root/myCron'
-				def generateExists = fileExists '/root/generateSigningKey.sh'
+			stages {
+				script {
+					def cronExists = fileExists '/root/myCron'
+					def generateExists = fileExists '/root/generateSigningKey.sh'
 
-				if(cronExists && generateExists) {
-					stage('Sign our project and output contents to console') {
+					if(cronExists && generateExists) {
+						stage('Sign our project and output contents to console') {
 
-						unstash hash-out
+							unstash hash-out
 
-						sh 'signBuild.sh'
-					}
-				} else {
-					stage('Unstash and create cron job') {
+							sh 'signBuild.sh'
+						}
+					} else {
+						stage('Unstash and create cron job') {
 
-						unstash 'generate-key'
+							unstash 'generate-key'
 
-						sh 'echo "*/5 * * * * generateSigningKey.sh" >> /root/myCron'
-						sh 'crontab myCron'
+							sh 'echo "*/5 * * * * generateSigningKey.sh" >> /root/myCron'
+							sh 'crontab myCron'
 
-						sh 'echo myCron'
+							sh 'echo myCron'
+						}
 					}
 				}
 			}
