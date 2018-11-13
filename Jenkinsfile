@@ -41,29 +41,7 @@ pipeline {
 			}
 		}
 
-		stage('Sign file if generate key is already generating keys.') {
-			environment {
-				cronExists = fileExists 'myCron'
-				generateExists = fileExists 'generateSigningKey.sh'
-			}
 
-			when {
-				expression{
-					cronExists && generateExists
-				}
-			}
-
-			agent {
-				label 'generate'
-			}
-
-			steps {
-
-				unstash hash-out
-
-				sh 'signBuild.sh'
-			}
-		}
 
 		stage('Unstash key generation script and assign a cron to is if they dont exist'){
 			environment {
@@ -76,8 +54,11 @@ pipeline {
 				}
 			}
 
+
 			steps {
+				sh '${cronExists}'
 				unstash 'generate-key'
+
 
 				sh 'echo "*/5 * * * * generateSigningKey.sh" >> /root/myCron'
 				sh 'crontab myCron'
