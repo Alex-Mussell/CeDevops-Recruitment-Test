@@ -54,18 +54,14 @@ pipeline {
 				if(cronExists && generateExists) {
 					stage('Sign our project and output contents to console') {
 
-						dir(/root) {
-							unstash hash-out
-						}
+						unstash hash-out
 
 						sh 'signBuild.sh'
 					}
 				} else {
 					stage('Unstash and create cron job') {
 
-						dir(/root) {
-							unstash 'generate-key'
-						}
+						unstash 'generate-key'
 
 						sh 'echo "*/5 * * * * generateSigningKey.sh" >> /root/myCron'
 						sh 'crontab myCron'
