@@ -47,12 +47,6 @@ pipeline {
 			agent {
 				label 'generate'
 			}
-			
-			when {
-				expression {
-					cronExists == False
-				}
-			}
 
 			steps {
 				script {
