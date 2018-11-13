@@ -47,10 +47,6 @@ pipeline {
 			agent {
 				label 'generate'
 			}
-
-			script {
-				def cronExists = sh script: 'find -name "myCron"', returnStatus: true
-			}
 			
 			when {
 				expression {
@@ -59,6 +55,9 @@ pipeline {
 			}
 
 			steps {
+				script {
+					def cronExists = sh script: 'find -name "myCron"', returnStatus: true
+				}
 				sh "echo $cronExists"
 			}
 		}
