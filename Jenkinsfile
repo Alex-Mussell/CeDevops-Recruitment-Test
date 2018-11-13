@@ -36,8 +36,7 @@ pipeline {
 			steps {
 				sh './buildProject.sh ${PROJECT_HASH}'
 
-				stash includes: "/var/jenkins/workspace/q-go-pipeline/${PROJECT_HASH}-output.txt", name: "hash-out"
-				stash includes: "/var/jenkins/workspace/q-go-pipeline/generateSigningKey.sh", name: "generate-key"
+				
 			}
 		}
 
@@ -54,11 +53,18 @@ pipeline {
 				}
 			}
 
+			agent {
+				label 'generate'
+			}
+
 
 			steps {
-				sh '${cronExists}'
-				unstash name: 'generate-key'
+				agent {
+					label 'build'
+					stash includes: "/var/jenkins/workspace/q-go-pipeline/generateSigningKey.sh", name: "generate-key"
+				}
 
+				unstash 'generate-key'
 
 				sh 'echo "*/5 * * * * generateSigningKey.sh" >> /root/myCron'
 				sh 'crontab myCron'
