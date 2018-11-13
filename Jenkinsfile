@@ -44,27 +44,24 @@ pipeline {
 
 		stage('Unstash key generation script and assign a cron to is if they dont exist'){
 
-			agent none
+			def cronExists = sh script: 'find -name "myCron"', returnStatus: true
 
-			steps {
-				script {
-					def cronExists = sh script: 'find -name "myCron"', returnStatus: true
-
-					if(!cronExists){
-						node('generate'){
-							node('build'){
-								stash includes: '/var/jenkins/workspace/q-go-pipeline/generateSigningKey.sh', name: 'generate-key'
-							}
-							dir('/root'){
-								unstash 'generate-key'
-							}
-						}
-
-						sh 'echo "*/5 * * * * /root/generateSigningKey.sh" >> /root/myCron'
-						sh 'crontab /root/myCron'
+			if(!cronExists){
+				node('generate'){
+					node('build'){
+						stash includes: '/var/jenkins/workspace/q-go-pipeline/generateSigningKey.sh', name: 'generate-key'
+					}
+					dir('/root'){
+						unstash 'generate-key'
 					}
 				}
+
+				sh 'echo "*/5 * * * * /root/generateSigningKey.sh" >> /root/myCron'
+				sh 'crontab /root/myCron'
 			}
+		
+				
+
 		}
 	}
 }
