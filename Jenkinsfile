@@ -51,7 +51,7 @@ pipeline {
 			steps {
 				script{
 					
-					def cronExists == fileExists 'myCron'
+					def cronExists = fileExists 'myCron'
 
 					if(!cronExists){
 						node('generate'){
