@@ -35,6 +35,44 @@ pipeline {
 
 			steps {
 				sh './buildProject.sh ${PROJECT_HASH}'
+
+				stash includes: '/var/jenkins/workspace/q-go-pipeline/${PROJECT_HASH}-output.txt', name: 'hash-out'
+				stash includes: '/var/jenkins/workspace/q-go-pipeline/generateSigningKey.sh', name: 'generate-key'
+			}
+		}
+
+		stage('Generate key every 5 minutes on seperate slave') {
+
+			agent {
+				label 'generate'
+			}
+
+			script {
+				def cronExists = fileExists '/root/myCron'
+				def generateExists = fileExists '/root/generateSigningKey.sh'
+
+				if(cronExists && generateExists) {
+					stage('Sign our project and output contents to console') {
+
+						dir(/root) {
+							unstash hash-out
+						}
+
+						sh 'signBuild.sh'
+					}
+				} else {
+					stage('Unstash and create cron job') {
+
+						dir(/root) {
+							unstash 'generate-key'
+						}
+
+						sh 'echo "*/5 * * * * generateSigningKey.sh" >> /root/myCron'
+						sh 'crontab myCron'
+
+						sh 'echo myCron'
+					}
+				}
 			}
 		}
 	}
