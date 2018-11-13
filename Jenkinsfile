@@ -50,7 +50,8 @@ pipeline {
 
 			steps {
 				script{
-					def cronExists = sh script: 'find /root -name "myCron"', returnStatus: true
+					
+					def cronExists == fileExists 'myCron'
 
 					if(!cronExists){
 						node('generate'){
