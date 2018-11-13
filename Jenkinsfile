@@ -44,6 +44,10 @@ pipeline {
 
 		stage('Unstash key generation script and assign a cron to is if they dont exist'){
 
+			agent{
+				label 'generate'
+			}
+
 			steps {
 				script{
 					def cronExists = sh script: 'find -name "myCron"', returnStatus: true
