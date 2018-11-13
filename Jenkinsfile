@@ -1,11 +1,4 @@
 pipeline {
-	
-	environment {
-		PROJECT_HASH = sh (
-			script: 'git --git-dir /var/jenkins/workspace/q-go-pipeline/.git rev-parse HEAD',
-			returnStdout: true
-		)
-	}
 
 	agent none
 
@@ -31,6 +24,13 @@ pipeline {
 
 			agent {
 				label 'build'
+			}
+
+			environment {
+				PROJECT_HASH = sh (
+				script: 'git --git-dir /var/jenkins/workspace/q-go-pipeline/.git rev-parse HEAD',
+				returnStdout: true
+				)
 			}
 
 			steps {
