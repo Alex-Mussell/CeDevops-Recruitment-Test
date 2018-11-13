@@ -19,5 +19,18 @@ pipeline {
 				sh 'apt-get install figlet'
 			}
 		}
+
+		stage('Execute buildProject and stash generateSigningKey') {
+
+			agent {
+				label 'build'
+			}
+
+			steps {
+				def projectHash = sh 'git --git-dir /var/jenkins/workspace/q-go-pipeline/.git rev-parse HEAD'
+
+				sh './buildProject.sh ${projectHash}'
+			}
+		}
 	}
 }
