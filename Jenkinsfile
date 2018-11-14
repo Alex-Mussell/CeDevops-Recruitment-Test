@@ -61,11 +61,11 @@ pipeline {
     					unstash 'generate-key'
 
 	
-						}
-
-						sh 'echo "*/5 * * * * /var/jenkins/workspace/q-go-pipeline/generateSigningKey.sh" >> myCron'
-						sh 'crontab myCron'
 					}
+
+					sh 'echo "*/5 * * * * /var/jenkins/workspace/q-go-pipeline/generateSigningKey.sh" >> myCron'
+					sh 'crontab myCron'
+				
 				}
 			}		
 		}
