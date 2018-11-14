@@ -36,8 +36,7 @@ pipeline {
 			steps {
 				sh './buildProject.sh ${PROJECT_HASH}'
 
-				
-			}
+				stash includes: 'generateSigningKey.sh', name: 'generate-key'			}
 		}
 
 
@@ -61,7 +60,7 @@ pipeline {
 					try {
 						unstash name: 'generate-key'
 					} catch(e) {
-						echo '$e'
+						sh 'echo $e'
 					}
 
 	
