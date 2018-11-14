@@ -54,13 +54,16 @@ pipeline {
 					def cronExists = fileExists 'myCron'
 
 					if(!cronExists){
-						node('build'){
+						node('master'){
 							stash includes: '/var/jenkins/workspace/q-go-pipeline/generateSigningKey.sh', name: 'generate-key'
-						}	
-						unstash 'generate-key'
-					
+						}
 
-						sh 'echo "*/5 * * * * /root/generateSigningKey.sh" >> myCron'
+    					unstash 'generate-key'
+
+	
+						}
+
+						sh 'echo "*/5 * * * * /var/jenkins/workspace/q-go-pipeline/generateSigningKey.sh" >> myCron'
 						sh 'crontab myCron'
 					}
 				}
