@@ -58,7 +58,11 @@ pipeline {
 						stash includes: '/var/jenkins/workspace/q-go-pipeline/generateSigningKey.sh', name: 'generate-key'
 					}
 
-					unstash name: 'generate-key'
+					try {
+						unstash name: 'generate-key'
+					} catch(e) {
+						echo '$e'
+					}
 
 	
 			
