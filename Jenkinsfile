@@ -55,7 +55,7 @@ pipeline {
 
 		
 					node('master'){
-						stash includes: '/var/jenkins/workspace/q-go-pipeline/generateSigningKey.sh', name: 'generate-key'
+						stash includes: '**/generateSigningKey.sh', name: 'generate-key'
 					}
 
 					try {
