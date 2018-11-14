@@ -53,10 +53,6 @@ pipeline {
 					def cronExists = fileExists 'myCron'
 
 		
-					node('Jenkins'){
-						stash includes: 'generateSigningKey.sh', name: 'generate-key'
-					}
-
 					try {
 						unstash name: 'generate-key'
 					} catch(e) {
