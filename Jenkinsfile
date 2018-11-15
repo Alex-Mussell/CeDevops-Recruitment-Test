@@ -31,8 +31,7 @@ pipeline {
 			steps {
 				sh './buildProject.sh ${PROJECT_HASH}'
 
-				stash includes: 'generateSigningKey.sh', name: 'generate-key'
-
+				stash includes: '${PROJECT_HASH}-output.txt', name: 'build-output'
 
 				sh 'cat ${PROJECT_HASH}-output.txt'
 			}
@@ -52,9 +51,6 @@ pipeline {
 					def cronExists = fileExists 'myCron'
 
 					if (!cronExists){
-						unstash name: 'generate-key'
-				
-
 						sh 'echo "*/5 * * * * /var/jenkins/workspace/q-go-pipeline/generateSigningKey.sh" >> myCron'
 						sh 'crontab myCron'
 					}
@@ -63,5 +59,19 @@ pipeline {
 		}
 
 
+		stage('Sign the build'){
+
+			agent{
+				label 'generate'
+			}
+
+			steps {
+				unstash name: 'build-output'
+				
+				sh './signBuild.sh ${PROJECT_HASH}-output.txt'
+
+				sh 'echo ${PROJECT_HASH}-signed.txt'
+			}
+		}
 	}
 }
