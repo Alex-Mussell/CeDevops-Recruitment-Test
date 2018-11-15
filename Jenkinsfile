@@ -1,6 +1,13 @@
 pipeline {
 
-	agent none
+	agent any
+
+	environment {
+		PROJECT_HASH = sh (
+			script: 'git --git-dir /var/jenkins/workspace/q-go-pipeline/.git rev-parse HEAD',
+			returnStdout: true
+		).trim()
+	}
 
 	stages {
 		stage('Preparing build environment') {
@@ -20,17 +27,12 @@ pipeline {
 				label 'build'
 			}
 
-			environment {
-				PROJECT_HASH = sh (
-				script: 'git --git-dir /var/jenkins/workspace/q-go-pipeline/.git rev-parse HEAD',
-				returnStdout: true
-				).trim()
-			}
 
 			steps {
 				sh './buildProject.sh ${PROJECT_HASH}'
 
 				stash includes: 'generateSigningKey.sh', name: 'generate-key'
+
 
 				sh 'cat ${PROJECT_HASH}-output.txt'
 			}
@@ -59,5 +61,7 @@ pipeline {
 				}
 			}		
 		}
+
+
 	}
 }
