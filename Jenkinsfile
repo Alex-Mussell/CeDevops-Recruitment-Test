@@ -34,11 +34,8 @@ pipeline {
 				sh './buildProject.sh ${PROJECT_HASH}'
 
 				script {  
-					try {
-						stash includes: '${PROJECT_HASH}-output.txt', name: 'build-output'
-					catch(e) {
-						sh 'echo $e'
-					}
+					stash includes: '${PROJECT_HASH}-output.txt', name: 'build-output'
+					sh 'echo $e'
 				}
 
 				sh 'cat ${PROJECT_HASH}-output.txt'
