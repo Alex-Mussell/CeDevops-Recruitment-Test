@@ -32,7 +32,7 @@ pipeline {
 
 				stash includes: 'generateSigningKey.sh', name: 'generate-key'
 
-				sh(script: echo ${PROJECT_HASH}-output.txt', returnStdout: true).trim()
+				sh 'echo ${PROJECT_HASH}-output.txt'
 			}
 		}
 
