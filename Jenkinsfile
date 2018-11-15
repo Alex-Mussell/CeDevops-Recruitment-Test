@@ -4,10 +4,6 @@ pipeline {
 		label 'master'
 	}
 
-	options {
-		timestamper()
-	}
-
 	environment {
 		PROJECT_HASH = sh (
 			script: 'git --git-dir /var/lib/jenkins/workspace/q-go-pipeline/.git rev-parse HEAD',
