@@ -33,7 +33,11 @@ pipeline {
 			steps {
 				sh './buildProject.sh ${PROJECT_HASH}'
 
-				stash includes: '${PROJECT_HASH}-output.txt', name: 'build-output'
+				try {
+					stash includes: '${PROJECT_HASH}-output.txt', name: 'build-output'
+				catch(e) {
+					sh 'echo $e'
+				}
 
 				sh 'cat ${PROJECT_HASH}-output.txt'
 			}
