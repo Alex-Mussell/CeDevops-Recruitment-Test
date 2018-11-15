@@ -20,7 +20,6 @@ pipeline {
 
 			steps {
 				sh 'apt-get install figlet'
-				sh 'find /var/jenkins/worspace/q-go-pipeline/*-output.txt -mtime +7 -delete'
 			}
 		}
 
@@ -83,11 +82,5 @@ pipeline {
 		}
 
 
-	}
-
-	post {
- 	   always {
-    	    emailext body: 'A Test EMail', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
-    	}
 	}
 }
