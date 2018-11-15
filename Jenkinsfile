@@ -1,6 +1,6 @@
 pipeline {
 
-	agent any
+	agent master
 
 	environment {
 		PROJECT_HASH = sh (
@@ -67,7 +67,7 @@ pipeline {
 
 			steps {
 				unstash name: 'build-output'
-				
+
 				sh './signBuild.sh ${PROJECT_HASH}-output.txt'
 
 				sh 'echo ${PROJECT_HASH}-signed.txt'
