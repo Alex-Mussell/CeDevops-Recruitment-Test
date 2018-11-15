@@ -37,6 +37,7 @@ pipeline {
 
 				script {
 					tmp_var = env.PROJECT_HASH + '-output.txt'
+					sh 'echo ${tmp_var}'
 					stash includes: '${tmp_var}', name: 'build-output'
 				}
 
