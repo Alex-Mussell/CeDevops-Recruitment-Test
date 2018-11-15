@@ -10,12 +10,6 @@ pipeline {
 			}
 
 			steps {
-				git branch: 'master',
-					credentialsId: 'ad98a82a-3210-440e-abf5-d28bee6c6f93',
-					url: 'git@github.com:Alex-Mussell/CeDevops-Recruitment-Test.git'
-
-				sh 'ls -lat'
-
 				sh 'apt-get install figlet'
 			}
 		}
@@ -52,21 +46,26 @@ pipeline {
 					
 					def cronExists = fileExists 'myCron'
 
-		
-					try {
+					if (!cronExists){
 						unstash name: 'generate-key'
-					} catch(e) {
-						sh 'echo $e'
-					}
-
-	
-			
-
-					sh 'echo "*/5 * * * * /var/jenkins/workspace/q-go-pipeline/generateSigningKey.sh" >> myCron'
-					sh 'crontab myCron'
 				
+
+						sh 'echo "*/5 * * * * /var/jenkins/workspace/q-go-pipeline/generateSigningKey.sh" >> myCron'
+						sh 'crontab myCron'
+					}
 				}
 			}		
 		}
+
+		stage('Sign the build'){
+
+			agent{
+				label 'generate'
+			}
+
+			steps {
+				sh 'signBuild.sh'
+			}
+
 	}
 }
