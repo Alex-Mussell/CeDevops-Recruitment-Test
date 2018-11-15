@@ -4,7 +4,7 @@ pipeline {
 
 	environment {
 		PROJECT_HASH = sh (
-			script: 'git --git-dir /var/jenkins/workspace/q-go-pipeline/.git rev-parse HEAD',
+			script: 'git --git-dir /var/lib/jenkins/workspace/q-go-pipeline rev-parse HEAD',
 			returnStdout: true
 		).trim()
 	}
