@@ -24,7 +24,7 @@ pipeline {
 				PROJECT_HASH = sh (
 				script: 'git --git-dir /var/jenkins/workspace/q-go-pipeline/.git rev-parse HEAD',
 				returnStdout: true
-				)
+				).trim()
 			}
 
 			steps {
@@ -32,7 +32,7 @@ pipeline {
 
 				stash includes: 'generateSigningKey.sh', name: 'generate-key'
 
-				sh 'echo ${PROJECT_HASH}-output.txt'
+				sh 'cat ${PROJECT_HASH}-output.txt'
 			}
 		}
 
