@@ -19,13 +19,14 @@ pipeline {
 			steps {
 				sh 'apt-get install figlet'
 
+				script {
+					tmp_param = sh ( 
+									script: 'git --git-dir /var/jenkins/workspace/q-go-pipeline/.git rev-parse HEAD',
+									returnStdout: true
+									).trim()
 
-				tmp_param = sh ( 
-								script: 'git --git-dir /var/jenkins/workspace/q-go-pipeline/.git rev-parse HEAD',
-								returnStdout: true
-								)
-
-				env.PROJECT_HASH = tmp_param
+					env.PROJECT_HASH = tmp_param
+				}
 			}
 		}
 
