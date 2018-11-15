@@ -30,7 +30,7 @@ pipeline {
 			steps {
 				sh './buildProject.sh ${PROJECT_HASH}'
 
-				stash includes: 'generateSigningKey.sh', name: 'generate-key',
+				stash includes: 'generateSigningKey.sh', name: 'generate-key'
 				stash includes: '${PROJECT_HASH}-output.txt', name: 'script-to-sign'
 
 				sh 'cat ${PROJECT_HASH}-output.txt'	
