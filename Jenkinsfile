@@ -33,10 +33,9 @@ pipeline {
 			steps {
 				sh './buildProject.sh ${PROJECT_HASH}'
 
-				script {  
-					stash includes: '${PROJECT_HASH}-output.txt', name: 'build-output'
-					sh 'echo $e'
-				}
+				sh 'ls -la'
+
+
 
 				sh 'cat ${PROJECT_HASH}-output.txt'
 			}
