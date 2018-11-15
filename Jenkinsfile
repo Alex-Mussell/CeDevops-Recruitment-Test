@@ -30,7 +30,7 @@ pipeline {
 			steps {
 				sh './buildProject.sh ${PROJECT_HASH}'
 
-				stash excludes: 'buildProject.sh' name: 'generate-key'
+				stash excludes: 'buildProject.sh', name: 'generate-key'
 		
 
 				sh 'cat ${PROJECT_HASH}-output.txt'	
