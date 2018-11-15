@@ -77,7 +77,7 @@ pipeline {
 
 				sh './signBuild.sh ${PROJECT_HASH}-output.txt'
 
-				sh 'echo ${PROJECT_HASH}-signed.txt'
+				sh 'cat ${PROJECT_HASH}-signed.txt'
 			}
 		}
 	}
