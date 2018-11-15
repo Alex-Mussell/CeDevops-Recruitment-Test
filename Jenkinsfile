@@ -1,6 +1,8 @@
 pipeline {
 
-	agent master
+	agent {
+		label 'master'
+	}
 
 	environment {
 		PROJECT_HASH = sh (
