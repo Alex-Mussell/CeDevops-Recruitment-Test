@@ -66,6 +66,6 @@ pipeline {
 			steps {
 				sh 'signBuild.sh'
 			}
-
+		}
 	}
 }
