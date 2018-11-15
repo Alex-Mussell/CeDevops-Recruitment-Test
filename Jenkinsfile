@@ -38,41 +38,5 @@ pipeline {
 		}
 
 
-
-		stage('Unstash key generation script and assign a cron to is if they dont exist'){
-
-			agent{
-				label 'generate'
-			}
-
-			steps {
-				script{
-					
-					def cronExists = fileExists 'myCron'
-
-					if (!cronExists){
-						unstash name: 'generate-key'
-				
-
-						sh 'echo "*/5 * * * * /var/jenkins/workspace/q-go-pipeline/generateSigningKey.sh" >> myCron'
-						sh 'crontab myCron'
-					}
-				}
-			}		
-		}
-
-		stage('Sign the build'){
-
-			agent{
-				label 'generate'
-			}
-
-			steps {
-				unstash name: 'script-to-sign'
-				sh './signBuild.sh ${PROJECT_HASH}-output.txt'
-
-				sh 'echo ${PROJECT_HASH}-signed.txt'
-			}
-		}
 	}
 }
