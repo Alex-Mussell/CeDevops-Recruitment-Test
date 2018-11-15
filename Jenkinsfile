@@ -4,6 +4,10 @@ pipeline {
 		label 'master'
 	}
 
+	options {
+		timestamper()
+	}
+
 	environment {
 		PROJECT_HASH = sh (
 			script: 'git --git-dir /var/lib/jenkins/workspace/q-go-pipeline/.git rev-parse HEAD',
@@ -20,6 +24,7 @@ pipeline {
 
 			steps {
 				sh 'apt-get install figlet'
+				sh 'find /var/jenkins/worspace/q-go-pipeline/*-output.txt -mtime +7 -delete'
 			}
 		}
 
@@ -80,5 +85,13 @@ pipeline {
 				sh 'cat ${PROJECT_HASH}-output.txt-signed.txt'
 			}
 		}
+
+
+	}
+
+	post {
+ 	   always {
+    	    emailext body: 'A Test EMail', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
+    	}
 	}
 }
