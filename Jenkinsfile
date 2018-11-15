@@ -2,8 +2,15 @@ pipeline {
 
 	agent none
 
+    parameters {
+        string(name: 'PROJECT_HASH', defaultValue: '')
+    }
+
 	stages {
 		stage('Preparing build environment') {
+
+
+
 
 			agent {
 				label 'build'
@@ -11,6 +18,14 @@ pipeline {
 
 			steps {
 				sh 'apt-get install figlet'
+
+
+				tmp_param = sh ( 
+								script: 'git --git-dir /var/jenkins/workspace/q-go-pipeline/.git rev-parse HEAD',
+								returnStdout: true
+								)
+
+				env.PROJECT_HASH = tmp_param
 			}
 		}
 
@@ -20,20 +35,11 @@ pipeline {
 				label 'build'
 			}
 
-			environment {
-				PROJECT_HASH = sh (
-				script: 'git --git-dir /var/jenkins/workspace/q-go-pipeline/.git rev-parse HEAD',
-				returnStdout: true
-				)
-			}
 
 			steps {
-				sh './buildProject.sh ${PROJECT_HASH}'
+				sh './buildProject.sh ${env.PROJECT_HASH}'
 
-				stash includes: 'generateSigningKey.sh', name: 'generate-key'
-				stash includes: '*-output.txt', name: 'script-to-sign'
 
-				sh 'cat ${PROJECT_HASH}-output.txt'	
 			}
 		}
 
