@@ -35,7 +35,10 @@ pipeline {
 
 				sh 'ls -la'
 
-
+				script {  
+					stash includes: ''${PROJECT_HASH}'-output.txt', name: 'build-output'
+					sh 'echo $e'
+				}
 
 				sh 'cat ${PROJECT_HASH}-output.txt'
 			}
