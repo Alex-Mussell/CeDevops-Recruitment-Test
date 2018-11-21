@@ -23,7 +23,7 @@ pipeline {
 			}
 		}
 
-		stage('Execute buildProject and stash generateSigningKey') {
+		stage('Execute buildProject.sh and stash generateSigningKey.sh') {
 
 			agent {
 				label 'build'
@@ -32,8 +32,6 @@ pipeline {
 
 			steps {
 				sh './buildProject.sh ${PROJECT_HASH}'
-
-				sh 'ls -la'
 
 				script {
 					tmp_var = env.PROJECT_HASH + '-output.txt'
@@ -46,7 +44,7 @@ pipeline {
 
 
 
-		stage('Unstash key generation script and assign a cron to is if they dont exist'){
+		stage('Unstash key generation script and run every 5 minutes. If this is already running, skip'){
 
 			agent{
 				label 'generate'
@@ -80,7 +78,5 @@ pipeline {
 				sh 'cat ${PROJECT_HASH}-output.txt-signed.txt'
 			}
 		}
-
-
 	}
 }
